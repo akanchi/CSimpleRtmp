@@ -1,0 +1,62 @@
+cmake_minimum_required(VERSION 3.12)
+project(trunk)
+
+set(CMAKE_CXX_STANDARD 11)
+include_directories(${INC_DIR})
+link_directories(${LINK_DIR})
+
+add_executable(trunk
+        main.cpp
+        amf/amf0/amf0.cpp
+        amf/amf0/simple_buffer.cpp
+        RtmpClient.cpp
+        RtmpClient.h
+        io/TcpClient.cpp
+        io/TcpClient.h
+        Handshake.cpp
+        Handshake.h
+        util/util.cpp
+        util/util.h
+        packets/CommandPacket.cpp
+        packets/CommandPacket.h
+        packets/RtmpPacket.cpp
+        packets/RtmpPacket.h
+        ReadThread.cpp
+        ReadThread.h
+        io/TcpWrapper.cpp
+        io/TcpWrapper.h
+        queue/simple_queue.cpp
+        queue/simple_queue.h
+        RtmpDecoder.cpp
+        RtmpDecoder.h
+        packets/RtmpHeader.cpp
+        packets/RtmpHeader.h
+        packets/AbortPacket.cpp
+        packets/AbortPacket.h
+        packets/SetChunkSizePacket.cpp
+        packets/SetChunkSizePacket.h
+        packets/AcknowledgementPacket.cpp
+        packets/AcknowledgementPacket.h
+        packets/SetPeerBandwidthPacket.cpp
+        packets/SetPeerBandwidthPacket.h
+        packets/WindowAckSizePacket.cpp
+        packets/WindowAckSizePacket.h
+        packets/UserControlPacket.cpp
+        packets/UserControlPacket.h
+        RtmpSessionInfo.cpp
+        RtmpSessionInfo.h
+        ChunkStreamInfo.cpp
+        ChunkStreamInfo.h
+        packets/AudioPacket.cpp
+        packets/AudioPacket.h
+        packets/VideoPacket.cpp
+        packets/VideoPacket.h
+        packets/ContentData.cpp
+        packets/ContentData.h
+        packets/VariableBodyRtmpPacket.cpp
+        packets/VariableBodyRtmpPacket.h
+        thread_wrapper/ThreadWrapper.h
+        packets/DataPacket.cpp
+        packets/DataPacket.h
+        condition_wait_wrapper/ConditionWaitWrapper.cpp
+        condition_wait_wrapper/ConditionWaitWrapper.h)

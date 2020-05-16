@@ -1,0 +1,3 @@
+[submodule "trunk/amf"]
+	path = trunk/amf
+	url = https://github.com/akanchi/amf0.git
