@@ -49,6 +49,8 @@ namespace akanchi {
 
         void send_metadata(std::shared_ptr<Amf0Data> ecmaArray);
 
+        int set_chunk_size(uint32_t size);
+
     private:
         void reset();
 
@@ -79,7 +81,7 @@ namespace akanchi {
 
         void handle_invoke(std::shared_ptr<RtmpPacket> invoke);
 
-        void send_packet(std::shared_ptr<RtmpPacket> packet);
+        int send_packet(std::shared_ptr<RtmpPacket> packet);
 
         void handle_abort_packet(AbortPacket *packet);
         void handle_user_control_packet(UserControlPacket *packet);

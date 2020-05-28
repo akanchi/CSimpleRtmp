@@ -21,9 +21,20 @@ int main() {
     akanchi::RtmpClient *client = new akanchi::RtmpClient;
     std::cout << "Hello, World!" << std::endl;
 
-    if (client->connect("rtmp://127.0.0.1:1935/live/livestream")) {
-        client->publish();
+    if (!client->connect("rtmp://127.0.0.1:1935/live/livestream")) {
+        std::cerr << "connect failed" << std::endl;
+        return -1;
     }
+
+    if (!client->publish()) {
+        std::cerr << "publish failed" << std::endl;
+        return -1;
+    }
+
+    if (!client->set_chunk_size(4096)) {
+        std::cerr << "set chunk size failed" << std::endl;
+    }
+
     Amf0EcmaArray *ecmaArray = new Amf0EcmaArray;
     ecmaArray->put("encoder", new Amf0String("AKE"));
     ecmaArray->put("encoder_authors", new Amf0String("AKE"));

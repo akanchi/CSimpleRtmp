@@ -22,11 +22,14 @@ namespace akanchi {
 
         std::string addInvokedCommand(uint32_t transactionId, const std::string &commandName);
 
+        void reset();
+
     public:
         uint32_t window_bytes_read;
         uint32_t acknowledgement_window_size;
         uint32_t total_bytes_read;
-        volatile uint32_t chunk_size;
+        uint32_t chunk_size;
+        uint32_t out_chunk_size;
         std::map<uint32_t, std::shared_ptr<ChunkStreamInfo>> chunkChannels;
         std::map<uint32_t, std::string> invokedMethods;
 

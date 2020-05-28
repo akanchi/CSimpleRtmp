@@ -2,7 +2,8 @@
 
 namespace akanchi {
     RtmpSessionInfo::RtmpSessionInfo()
-            : chunk_size(128) {
+            : chunk_size(128)
+            , out_chunk_size(128) {
 
     }
 
@@ -37,5 +38,15 @@ namespace akanchi {
     std::string RtmpSessionInfo::addInvokedCommand(uint32_t transactionId, const std::string &commandName) {
         std::lock_guard<std::mutex> lk(_mutex);
         return invokedMethods[transactionId] = commandName;
+    }
+
+    void RtmpSessionInfo::reset() {
+        chunk_size = 128;
+        out_chunk_size = 128;
+        chunkChannels.clear();
+        {
+            std::lock_guard<std::mutex> lk(_mutex);
+            invokedMethods.clear();
+        }
     }
 }

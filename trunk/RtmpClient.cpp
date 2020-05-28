@@ -236,6 +236,8 @@ namespace akanchi {
 
         _transaction_id_counter = 0;
         _current_stream_id = 0;
+
+        _rtmp_session->reset();
     }
 
     void RtmpClient::send_connect_packet() {
@@ -309,6 +311,18 @@ namespace akanchi {
         metadata->addData(ecmaArray);
 
         send_packet(std::shared_ptr<RtmpPacket>(metadata));
+    }
+
+    int RtmpClient::set_chunk_size(uint32_t size) {
+        SetChunkSizePacket *setChunkSizePacket = new SetChunkSizePacket;
+        setChunkSizePacket->chunk_size = size < 128 ? 128 : size;
+
+        int ret = send_packet(std::shared_ptr<RtmpPacket>(setChunkSizePacket));
+        if (ret > 0) {
+            _rtmp_session->out_chunk_size = size;
+        }
+
+        return ret;
     }
 
     void RtmpClient::handle_rx_packet_loop() {
@@ -406,7 +420,7 @@ namespace akanchi {
         }
     }
 
-    void RtmpClient::send_packet(std::shared_ptr<RtmpPacket> packet) {
+    int RtmpClient::send_packet(std::shared_ptr<RtmpPacket> packet) {
         if (packet) {
             ChunkStreamInfo *chunkStreamInfo = _rtmp_session->getChunkStreamInfo(packet->header->csid);
             chunkStreamInfo->prevHeaderTx = packet->header;
@@ -421,11 +435,14 @@ namespace akanchi {
             }
 
             SimpleBuffer sb;
-            packet->write(&sb, 128, chunkStreamInfo);
+            packet->write(&sb, _rtmp_session->out_chunk_size, chunkStreamInfo);
             int ret = TcpWrapper::write(_tcp_client->fd(), &sb);
             if (ret < 0) {
                 std::cerr << "send_packet failed: " << ret << std::endl;
             }
+            return ret;
         }
+
+        return -1;
     }
 }
